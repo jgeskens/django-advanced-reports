@@ -64,7 +64,7 @@
                         <a href="{% url backoffice.name|add:':logout' %}" class="btn btn-danger">{% trans "Sign out" %}</a>
                     </form>
                     <p class="navbar-text navbar-right">
-                        {% blocktrans with request.user.username as username %}Signed in as {{ username }}{% endblocktrans %}
+                        <strong>{{ request.user.first_name }}</strong>
                     </p>
 
 
