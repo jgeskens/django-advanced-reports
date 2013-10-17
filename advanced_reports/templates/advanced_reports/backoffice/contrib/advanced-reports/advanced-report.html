@@ -141,6 +141,9 @@
                 </tr>
                 {% endverbatim %}
             </tbody>
+            {% if advreport.row_footer_subtotal_calculation_field %}
+                {% include advreport.row_footer_subtotal_template %}
+            {% endif %}
         </table>
     </div>
 

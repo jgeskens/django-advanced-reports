@@ -1,0 +1,18 @@
+{% load i18n %}
+
+<tr>
+    {% verbatim %}
+        <td colspan="{{ report.row_footer_subtotal_value_position }}" ng-hide="report.row_footer_subtotal_value_position==0" class="text-right">
+    {% endverbatim %}
+            {% trans "Subtotal" %} ({% trans "of this page" %}):
+        </td>
+
+    {% verbatim %}
+        <td colspan="{{ report.header.length-report.row_footer_subtotal_value_position }}">
+            <span ng-show="report.row_footer_subtotal_value_position==0">
+    {% endverbatim %}
+                {% trans "Subtotal" %} ({% trans "of this page" %}):
+            </span>
+            <strong>{% verbatim %}{{ report.row_footer_subtotal }}{% endverbatim %}</strong>
+        </td>
+</tr>

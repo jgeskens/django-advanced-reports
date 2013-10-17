@@ -329,7 +329,11 @@ def api_list(request, slug, ids=None):
             'show_action_bar': advreport.search_fields or advreport.filter_fields,
             'search_fields': advreport.search_fields,
             'filter_fields': advreport.filter_fields,
-            'filter_values': advreport.filter_values
+            'filter_values': advreport.filter_values,
+            'row_footer_subtotal_calculation_field': advreport.row_footer_subtotal_calculation_field,
+            'row_footer_subtotal_template': advreport.row_footer_subtotal_template,
+            'row_footer_subtotal_value_position': advreport.get_row_footer_subtotal_value_position,
+            'row_footer_subtotal': advreport.get_row_footer_subtotal
         }
         return JSONResponse(report)
 

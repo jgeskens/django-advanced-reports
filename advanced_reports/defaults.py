@@ -197,6 +197,7 @@ class ActionException:
         else:
             self.msg = u'%s' % msg
 
+
 class AdvancedReport(object):
     slug = None
     '''
@@ -240,6 +241,16 @@ class AdvancedReport(object):
     filter_values = {}
     '''
     Optional. A mapping of filter fields to their list of values.
+    '''
+
+    row_footer_subtotal_calculation_field = None
+    '''
+    Optional. If present a subtotal for the list will be shown for a defined column.
+    '''
+
+    row_footer_subtotal_template = 'advanced_reports/backoffice/inc_row_footer_subtotal.html'
+    '''
+    Optional. A template to display the subtotal of a page.
     '''
 
     item_actions = ()
@@ -770,6 +781,40 @@ class AdvancedReport(object):
         field_names = (s.rsplit('__', 1)[-1] for s in self.search_fields)
         field_names = u', '.join(self.get_field_metadata(field_name)['verbose_name'] for field_name in field_names)
         return _(u'You can search by %(fields)s') % {'fields': field_names}
+
+    @property
+    def get_row_footer_subtotal_value_position(self):
+        '''
+        Get the position of the column for displaying the subtotal. For tables this is used to determine the colspan.
+        If the column can't be found the list size is returned to have a total row colspan.
+        '''
+        if not self.row_footer_subtotal_calculation_field:
+            return len(self.column_headers)-1
+        search_column_header = self.row_footer_subtotal_calculation_field
+        from string import lower
+        for idx, column_header in enumerate(self.column_headers):
+            if lower(column_header['name']) == lower(search_column_header):
+                return idx
+        return len(self.column_headers)-1
+
+    @property
+    def get_row_footer_subtotal(self):
+        '''
+        Calculate the total by the provided calculation field.
+        '''
+        if not self.row_footer_subtotal_calculation_field:
+            return None
+
+        total = 0
+        search_column_header = self.row_footer_subtotal_calculation_field
+        from string import lower
+        import numbers
+        for item in self.queryset_request(request=self.request):
+            value = getattr(item, search_column_header, None) or getattr(item, lower(search_column_header), None)
+            if not isinstance(value, numbers.Number):
+                raise ValueError('Unsupported value for calculation')
+            total += value
+        return total
 
     def get_column_values(self, item):
         for field_name in self.fields:
