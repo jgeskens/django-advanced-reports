@@ -1,3 +1,26 @@
+/* FONT FACE
+=====================================*/
+@font-face {
+    font-family: 'Entypo';
+    src: url($url-assets + '/common/fonts/entypo/entypo.eot');
+    src: url($url-assets + '/common/fonts/entypo/entypo.eot?#iefix') format('embedded-opentype'),
+         url($url-assets + '/common/fonts/entypo/entypo.woff') format('woff'),
+         url($url-assets + '/common/fonts/entypo/entypo.ttf') format('truetype'),
+         url($url-assets + '/common/fonts/entypo/entypo.svg#entypo') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+	font-family: 'EntypoSocial';
+	src: url('../fonts/entypo/entypo-social.eot');
+	src: url('../fonts/entypo/entypo-social.eot?#iefix') format('embedded-opentype'),
+		 url('../fonts/entypo/entypo-social.woff') format('woff'),
+		 url('../fonts/entypo/entypo-social.ttf') format('truetype'),
+		 url('../fonts/entypo/entypo-social.svg#entypo-social') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
 
 body {
     font-family: 'Open Sans', $font;
@@ -108,7 +131,34 @@ th {
     }
 }
 
-table.data-table {
+table.table {
+    tbody{
+        th.icon,
+        th.icon *{
+            font-family: 'Entypo';
+            font-size: 1.95em;
+            font-weight: normal;
+            line-height: 0;
+            letter-spacing: 4px;
+            text-align: left;
+            color: $gray;
+        }
+
+        th.plus,
+        th .incoming{
+            color: #067100;
+            font-size: 0.9em;
+        }
+
+        th.minus,
+        th .outgoing{
+            color: $brightColor;
+            font-size: 0.95em;
+        }
+    }
+}
+
+table.ndata-table {
     td, th {
         background: rgba(0, 0, 0, 0.05);
         font-size: 1.141em;
