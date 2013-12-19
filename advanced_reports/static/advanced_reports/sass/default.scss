@@ -2,11 +2,11 @@
 =====================================*/
 @font-face {
     font-family: 'Entypo';
-    src: url($url-assets + '/common/fonts/entypo/entypo.eot');
-    src: url($url-assets + '/common/fonts/entypo/entypo.eot?#iefix') format('embedded-opentype'),
-         url($url-assets + '/common/fonts/entypo/entypo.woff') format('woff'),
-         url($url-assets + '/common/fonts/entypo/entypo.ttf') format('truetype'),
-         url($url-assets + '/common/fonts/entypo/entypo.svg#entypo') format('svg');
+    src: url('../fonts/entypo/entypo.eot');
+    src: url('../fonts/entypo/entypo.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/entypo/entypo.woff') format('woff'),
+         url('../fonts/entypo/entypo.ttf') format('truetype'),
+         url('../fonts/entypo/entypo.svg#entypo') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -138,10 +138,14 @@ table.table {
             font-family: 'Entypo';
             font-size: 1.95em;
             font-weight: normal;
-            line-height: 0;
+            line-height: 1em;
             letter-spacing: 4px;
             text-align: left;
             color: $gray;
+
+            span {
+                line-height: 0;
+            }
         }
 
         th.plus,
