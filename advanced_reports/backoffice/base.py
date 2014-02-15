@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.db.models.signals import post_save, post_delete
+from django.db import DatabaseError
 from django.http import Http404, HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.template.context import RequestContext
@@ -449,7 +450,12 @@ class BackOfficeBase(object):
             return ()
 
         if not DB_IS_POSTGRES:
-            all_indices = SearchIndex.objects.filter(to_index__icontains=query, backoffice_instance=self.name)
+            # Try MySQL Full Text Search, and fallback to a dumb icontains
+            try:
+                all_indices = SearchIndex.objects.filter(to_index__search=query, backoffice_instance=self.name)
+            except DatabaseError:
+                # Warning: this can be very slow! Only for demonstration purposes for small datasets.
+                all_indices = SearchIndex.objects.filter(to_index__icontains=query, backoffice_instance=self.name)
         else:
             ts_query = convert_to_raw_tsquery(query)
             all_indices = SearchIndex.objects.search(ts_query, raw=True).filter(backoffice_instance=self.name)
