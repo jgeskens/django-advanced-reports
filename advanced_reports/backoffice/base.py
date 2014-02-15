@@ -15,7 +15,7 @@ from django.template.loader import render_to_string
 from django.views.decorators.cache import never_cache
 from advanced_reports.backoffice.api_utils import JSONResponse, ViewRequestParameters
 from advanced_reports.backoffice.models import SearchIndex
-from advanced_reports.backoffice.search import convert_to_raw_tsquery
+from advanced_reports.backoffice.search import convert_to_raw_tsquery, preprocess_full_text_query
 
 from .decorators import staff_member_required
 
@@ -452,7 +452,8 @@ class BackOfficeBase(object):
         if not DB_IS_POSTGRES:
             # Try MySQL Full Text Search, and fallback to a dumb icontains
             try:
-                all_indices = SearchIndex.objects.filter(to_index__search=query, backoffice_instance=self.name)
+                ft_query = preprocess_full_text_query(query)
+                all_indices = SearchIndex.objects.filter(to_index__search=ft_query, backoffice_instance=self.name)
             except DatabaseError:
                 # Warning: this can be very slow! Only for demonstration purposes for small datasets.
                 all_indices = SearchIndex.objects.filter(to_index__icontains=query, backoffice_instance=self.name)
